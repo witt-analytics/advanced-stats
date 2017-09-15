@@ -8,8 +8,9 @@ output:
 runtime: shiny
 ---
 
-```{r setup, include=FALSE}
+```{r setup, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = 'center', fig.width = 7)
+speed = 500
 ```
 
 ## Statistical Uncertainty
@@ -24,6 +25,253 @@ Statistical methods rely __statistics__ and __probability theory__ to model (des
 
 - Statistic: a function of the data
 - Prob theory: mathematical rules describing the relative likelihood of an outcome 
+
+
+## Linear and Convex Loss Functions
+
+Suppose we model the relationship between an independent variable $x$ and a dependent variable $y$ with a simple affine function expressed as $y=mx + b$ and shown in Figure \@ref(fig:affine). 
+
+```{r affine, fig.cap='Plot of simple affine model $y=mx+b$', echo=FALSE}
+par(cex.axis = 1.1, cex.lab = 1.1, font = 2, las = 1, lwd = 2)
+curve(5 * x + 3, 
+      xlim = c(1,6), 
+      col = 'red',
+      ylab = 'y')
+```
+
+We can express a <u>naive</u> loss function for this model as
+
+$$
+L = y-mx-b.
+$$
+
+Using this function, loss could simply be defined as the sum of the distances between each point $(x_i,y_i), i = 1,...,n$ and the best-fit line representing the model. The parameters $m$ and $b$ for the best-fit line correspond to model with the minimum loss. If we observe perfect data (i.e. no uncertainty), the points fall on a straight line as shown in Figure \@ref(fig:perfect).
+
+```{r perfect, fig.cap='Obseverved data points from "perfect" data', echo=FALSE}
+par(cex.axis = 1.1, cex.lab = 1.1, font = 2, las = 1, lwd = 2)
+x_p <- seq(1, 6, by = 0.5)
+y_p <- 5 * x_p + 3
+plot(x = x_p,
+     y = y_p,
+     pch = 16,
+     col = 4,
+     cex = 1.5)
+curve(5 * x + 3, col = 'red', add = T)
+```
+
+We could attempt to compute the values of the parameters $m$ and $b$ that best fit the data using an optimization routine to minimize our loss function.  In the code chunk below we define our naive the loss function and attempt to find the values for $m$ and $b$ that minimize the loss.  However, note that the results are not quite right...  
+
+```{r}
+func <- function(params,x,y) {
+
+m   <- params[1] ; b <- params[2]
+Fun <- sum(y - m * x - b)
+
+return(Fun)    
+}
+optim(par = c(1,1),
+      fn = func,
+      x = x_p,
+      y = y_p,
+      control = list(fnscale = 1))
+```
+
+```{r, echo=FALSE, out.width='100%'}
+ui = fluidPage(
+   
+   sidebarLayout(
+      sidebarPanel(
+         sliderInput("phi",
+                     "Degrees for Phi:",
+                     min = -180,
+                     max = 180,
+                     value = 0,
+                     step = 5,
+                     animate = animationOptions(interval = speed, loop = T)),
+         sliderInput("theta",
+                     "Degrees for Theta:",
+                     min = -180,
+                     max = 180,
+                     value = 0,
+                     step = 5,
+                     animate = animationOptions(interval = speed, loop = T))),
+      
+      mainPanel(
+         plotOutput("plot3d"))))
+
+
+server = function(input, output, session) {
+  
+  output$plot3d <- renderPlot({
+     
+m     <- seq(0, 10, 0.1)
+b     <- seq(0, 10, 0.1)
+loss1 <- matrix(NA, nrow = length(m), ncol = length(b))
+
+for(i in 1:length(m)) {
+  for(j in 1:length(b)) {
+    
+    loss1[i,j] <- sum(y_p - m[i] * x_p - b[j])
+    
+  }
+}
+rownames(loss1) <- m
+colnames(loss1) <- b
+
+      plot3D::persp3D(z = loss1, theta = input$theta, phi = input$phi)
+   })
+}
+shinyApp(ui = ui, server = server)
+```
+
+What if we added some uncertainty to our responses in the form of white noise
+
+```{r imperfect, fig.cap='Obseverved data points from "imperfect" data', echo=TRUE}
+par(cex.axis = 1.1, cex.lab = 1.1, font = 2, las = 1, lwd = 2)
+sigma = 0.5
+x_i <- seq(1, 6, by = 0.5)
+y_i <- 5 * x_i + 3 + rnorm(length(x_i), 0, sigma)
+plot(x = x_i,
+     y = y_i,
+     pch = 16,
+     col = 4)
+curve(5 * x + 3, col = 'red', add = T)
+```
+
+```{r}
+func <- function(params,x,y) {
+
+m   <- params[1] ; b <- params[2]
+Fun <- sum(y - m * x - b)
+
+return(Fun)    
+}
+optim(par = c(1,1),
+      fn = func,
+      x = x_i,
+      y = y_i,
+      control = list(fnscale = 1))
+```
+
+```{r, echo=FALSE, out.width='100%'}
+ui = fluidPage(
+   
+   sidebarLayout(
+      sidebarPanel(
+         sliderInput("phi",
+                     "Degrees for Phi:",
+                     min = -180,
+                     max = 180,
+                     value = 0,
+                     step = 5,
+                     animate = animationOptions(interval = speed, loop = T)),
+         sliderInput("theta",
+                     "Degrees for Theta:",
+                     min = -180,
+                     max = 180,
+                     value = 0,
+                     step = 5,
+                     animate = animationOptions(interval = speed, loop = T))),
+      
+      mainPanel(
+         plotOutput("plot3d"))))
+
+
+server = function(input, output, session) {
+  
+  output$plot3d <- renderPlot({
+     
+m     <- seq(0, 10, 0.1)
+b     <- seq(0, 10, 0.1)
+loss1 <- matrix(NA, nrow = length(m), ncol = length(b))
+
+for(i in 1:length(m)) {
+  for(j in 1:length(b)) {
+    
+    loss1[i,j] <- sum(y_p - m[i] * x_p - b[j])
+    
+  }
+}
+rownames(loss1) <- m
+colnames(loss1) <- b
+
+      plot3D::persp3D(z = loss1, theta = input$theta, phi = input$phi)
+   })
+}
+shinyApp(ui = ui, server = server)
+```
+
+
+## Convex Loss Functions
+
+The problem is that linear functions are unconstrained.  A better option would be to propose a loss functions that is convex, such as 
+
+$$ 
+\sum_{i=1}^n (y_i-mx_i-b)^2
+$$
+
+```{r}
+func <- function(params,x,y) {
+
+m   <- params[1] ; b <- params[2]
+Fun <- sum((y - m * x - b)^2)
+
+return(Fun)    
+}
+optim(par = c(1,1),
+      fn = func,
+      x = x_i,
+      y = y_i,
+      control = list(fnscale = 1))
+```
+
+```{r, echo=FALSE, out.width='100%'}
+ui = fluidPage(
+   
+   sidebarLayout(
+      sidebarPanel(
+         sliderInput("phi2",
+                     "Degrees for Phi:",
+                     min = -180,
+                     max = 180,
+                     value = 0,
+                     step = 5,
+                     animate = animationOptions(interval = speed, loop = T)),
+         sliderInput("theta2",
+                     "Degrees for Theta:",
+                     min = -180,
+                     max = 180,
+                     value = 0,
+                     step = 5,
+                     animate = animationOptions(interval = speed, loop = T))),
+      
+      mainPanel(
+         plotOutput("plot3d2"))))
+
+
+
+server = function(input, output, session) {
+  
+  output$plot3d2 <- renderPlot({
+     
+m <- seq(0, 10, 0.1)
+b <- seq(0, 10, 0.1)
+loss2 <- matrix(NA, nrow = length(m), ncol = length(b))
+for(i in 1:length(m)) {
+  for(j in 1:length(b)) {
+    
+    loss2[i,j] <- sum((y_i - m[i] * x_i - b[j])^2)
+    
+  }
+}
+rownames(loss2) <- m
+colnames(loss2) <- b
+
+      plot3D::persp3D(z = loss2, theta = input$theta2, phi = input$phi2)
+   })
+}
+shinyApp(ui = ui, server = server)
+```
 
 ## The General Linear Statistical Model
 
@@ -49,168 +297,8 @@ a link function $g(\mu_i)$ describing how the mean, $E(Y_i) = \mu_i$, depends on
 
 - Variance function - $Var(Y_i) = V(\mu)$
 
-In the case of linear regression $\epsilon \sim N(0, \sigma^2)$ have the linear
-predictor
-
-
-where $x_0 = 1$
-and the value of    
 Linear Regression Loss (Cost) function
-
-
 
 $$
 \frac{1}{2m} \sum _{i=1}^m \Big(y_{i}-h_\theta(x_{i})\Big)^2
 $$
-
-
-## Linear loss function
-
-Suppose we model the relationship between an independent variable $x$ and a dependent variable $y$ with a simple affine function expressed as $y=mx + b$ and shown in Figure \@ref(fig:affine). 
-
-```{r affine, fig.cap='Plot of simple affine model $y=mx+b$', echo=FALSE}
-par(cex.axis = 1.1, cex.lab = 1.1, font = 2, las = 1, lwd = 2)
-curve(5 * x + 3, 
-      xlim = c(1,6), 
-      col = 'red',
-      ylab = 'y')
-```
-
-We can express a naive loss function for this model as
-
-$$
-L = y-mx-b.
-$$
-
-Using this function, loss could simply be defined as the sum of the distances between each point $(x_i,y_i), i = 1,...,n$ and the best-fit line representing the model. The parameters $m$ and $b$ for the best-fit line correspond to model with the minimum loss. If we observe perfect data (i.e. no uncertainty), the points fall on a straight line as shown in Figure \@ref(fig:perfect).
-
-```{r perfect, fig.cap='Obseverved data points from "perfect" data', echo=FALSE}
-par(cex.axis = 1.1, cex.lab = 1.1, font = 2, las = 1, lwd = 2)
-x <- seq(1, 6, by = 0.5)
-y <- 5 * x + 3
-plot(x = x,
-     y = y,
-     pch = 16,
-     col = 4)
-```
-
-We could attempt to compute the values of the parameters $m$ and $b$ that best fit the data using an optimization routine to minimize our loss function.  In the code chunk below we define our naive the loss function and attempt to find the values for $m$ and $b$ that minimize the loss.  However, note that the results are not quite right...  
-
-```{r}
-func <- function(params,x,y) {
-
-m   <- params[1] ; b <- params[2]
-Fun <- sum(y - m * x - b)
-
-return(Fun)    
-}
-optim(par = c(1,1),
-      fn = func,
-      x = x,
-      y = y,
-      control = list(fnscale = 1))
-```
-
-```{r, echo=FALSE, out.width='100%'}
-fluidPage(
-   
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("phi",
-                     "Degrees for Phi:",
-                     min = -20,
-                     max = 20,
-                     value = 0,
-                     step = 1),
-         sliderInput("theta",
-                     "Degrees for Theta:",
-                     min = -20,
-                     max = 20,
-                     value = 0,
-                     step = 1)),
-      
-      mainPanel(
-         plotOutput("plot3d"))))
-
-
-   output$plot3d <- renderPlot({
-     
-m     <- seq(0, 10, 0.1)
-b     <- seq(0, 10, 0.1)
-loss1 <- matrix(NA, nrow = length(m), ncol = length(b))
-
-for(i in 1:length(m)) {
-  for(j in 1:length(b)) {
-    
-    loss1[i,j] <- sum(y - m[i] * x - b[j])
-    
-  }
-}
-rownames(loss1) <- m
-colnames(loss1) <- b
-
-      plot3D::persp3D(z = loss1, theta = input$theta, phi = input$phi)
-   })
-```
-
-The problem is that linear functions are unconstrained.  A better option would be to propose a loss functions that is convex, such as 
-
-$$ 
-\sum_{i=1}^n (y_i-mx_i-b)^2
-$$
-
-```{r}
-func <- function(params,x,y) {
-
-m   <- params[1] ; b <- params[2]
-Fun <- sum((y - m * x - b)^2)
-
-return(Fun)    
-}
-optim(par = c(1,1),
-      fn = func,
-      x = x,
-      y = y,
-      control = list(fnscale = 1))
-```
-
-```{r, echo=FALSE, out.width='100%'}
-fluidPage(
-   
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("phi2",
-                     "Degrees for Phi:",
-                     min = -20,
-                     max = 20,
-                     value = 0,
-                     step = 1),
-         sliderInput("theta2",
-                     "Degrees for Theta:",
-                     min = -20,
-                     max = 20,
-                     value = 0,
-                     step = 1)),
-      
-      mainPanel(
-         plotOutput("plot3d2"))))
-
-
-   output$plot3d2 <- renderPlot({
-     
-m <- seq(0, 10, 0.1)
-b <- seq(0, 10, 0.1)
-loss2 <- matrix(NA, nrow = length(m), ncol = length(b))
-for(i in 1:length(m)) {
-  for(j in 1:length(b)) {
-    
-    loss2[i,j] <- sum((y - m[i] * x - b[j])^2)
-    
-  }
-}
-rownames(loss2) <- m
-colnames(loss2) <- b
-
-      plot3D::persp3D(z = loss2, theta = input$theta2, phi = input$phi2)
-   })
-```
