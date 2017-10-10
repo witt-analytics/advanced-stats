@@ -1,0 +1,199 @@
+---
+title: "Fantasy Football Analytics"
+subtitle: "ANLT 501 - Project Kickoff"
+author: "Jason Freels"
+date: "`r format(Sys.Date(), '%d %b %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+```
+
+# Overview
+
+Fantasy football is a game in which fans of American football select players from current rosters of teams in the National Football League and are awarded points based on their players performances.  The basic idea is to predict which (real-life) players will perform well in an upcoming game.  For this project, students will be separated into teams and will be tasked with building a statistical model to predict a player’s performance.
+
+The game which will be the target of this project is the between the Kansas City Chiefs and the Oakland Raiders.  Why this game?  Because this game will be played on Thursday, 19 October which is the next time we will meet in class.  Your team will have until 18 October to collect the necessary data and build your model.  Teams will present their modeling approaches and their predictions in class on the 19th before game later that evening.  On the 20th, we’ll compare each model’s prediction against the game results.
+
+## The Rules
+
+Teams must build a statistical model to predict the number of fantasy points awarded to either quarterback using the simplified scoring rules below:
+
+-	1 point is awarded for every 30 passing yards
+-	6 points are awarded for every passing touchdown
+-	2 points are deducted for every interception thrown
+
+Teams must then present their modelling approach to the class using an rmarkdown slide format such as either [__ioslides__](http://rmarkdown.rstudio.com/ioslides_presentation_format.html), [__reveal.js__](http://rmarkdown.rstudio.com/revealjs_presentation_format.html), [__slidy__](http://rmarkdown.rstudio.com/slidy_presentation_format.html), or [__\LaTeX beamer__](http://rmarkdown.rstudio.com/beamer_presentation_format.html) Teams must  include in their presentations: Where the data was obtained, how the data was accessed, their chosen statistical modelling approach, the loss function used by the modelling approach, the factors chosen to include in their model.
+
+Teams will be assessed on the quality of their presentations and the value of their predictions.
+
+# Getting Started with Getting Data
+
+In the sections that follow we walk through the initial steps of extracting data for NFL games using the `nflscraR` package.  In getting data we should recognize that we may need to collect different data, depending on how we choose to attack the problem. For example, suppose I choose to predict the number of fantasy points scored by [__Alex Smith__](http://www.nfl.com/player/alexsmith/2506340/profile) the quarterback for the Kansas City Chiefs.  I could collect data on how many fantasy points he's scored in games over the last several seasons.  Or, I could collect data on the number of fantasy points that the Oakland Raiders defense has given up to the quarterbacks in games over the last several seasons.  There's 'right' to do this, but in this document I've chosen to pull data on how many points the Raiders defense has given up.   
+
+## Getting Things Ready
+
+As usual, we first need to load some packages.  To do this, simply copy and copy the code in the chunk below and paste it into your R console.    If you've never installed one or more of these packages or if you get an error when running this code you can install the packages using the `install.package()` function. 
+
+```{r}
+library(ggplot2)   # Graphics and data viz
+library(plyr)      # Data manipulation
+library(dplyr)     # Data manipulation
+library(pheatmap)  # 
+library(RJSONIO)   # Interface between R & JSON 
+library(RCurl)     # Interface between R & curl
+library(DT)        # Interactive tables
+library(rprojroot) # Easily get root directories 
+library(devtools)  # Tools for R development
+library(readr)     # read in data from Excel files
+```
+
+With these pacakges loaded, we now need to install the `nflscrapR` package. This package has not yet been published to the [__CRAN__](https://cran.r-project.org/), but can be downloaded and installed from [__GitHub__](https://github.com/maksimhorowitz/nflscrapR) using the `devtools` package.  The code below downloads and installs the package from the nflscrapR repository which is owned by the GitHub user maksimhorowitz.  
+
+```{r, eval=FALSE}
+devtools::install_github("maksimhorowitz/nflscrapR")
+```
+
+Once installed, we can load the package as normal usign the `library()` function.
+
+```{r}
+library(nflscrapR)
+```
+
+## Collecting the Data
+
+With the `nflscrapR` package installed and loaded, we're ready to start collecting data for serveral NFL games across many seasons. First, we want to know what functions are available for us to use with this package to find out run the function below, this should open up a window listing all of the functions in the package that you can use along with a short description of what they do.  
+
+```{r, eval=FALSE}
+help(package = 'nflscrapR')
+```
+
+As you see there are several functions in the package and some my be of use to your in completing this project.  NOTE: some of the functions can take a long time to run.  For example, the `season_games()` function scrapes all of the data from every game in a specified season.  We only want a small amount of data from a small number of games.  
+
+I'd like to use the `simple_boxscore()` function to extract data from only the games that a specific team was involved in.  The `simple_boxscore()` function takes two arguments: `GameID` and `home`. The first argument `GameID` is a 10-digit character string or number that matches up with the game ID assigned by the NFL to uniquely identify each game.  The second argument `home` is a logical argument indicating if data is desired for the home team or not.  Of course we may not know the game ID's for the games involving the Raiders but we can use the `extracting_gameids()` function to get the game ID's for the 2015, 2016, and 2017 seasons.  
+
+```{r, cache=TRUE}
+id2015 <- extracting_gameids(2015)
+id2016 <- extracting_gameids(2016)
+id2017 <- extracting_gameids(2017)
+```
+
+Observing the game ID's for the first 10 games of the 2015 season we see that the identifier includes the game date and a 2-digit number for the game playedd on that data.
+
+```{r}
+id2015[1:10]
+```
+
+Now that we have the game ID's we need to find out which ID's reference games that involved either the Oakland Raiders or the Kansas City Chiefs.  To do this, we'll first declare a function to extract the teams playing in every game.  This function take a vector of game ID's and return a `data.frame` with three columns for the game ID, the abbreviation of the home team and the abbreviation of the away team. 
+
+```{r}
+raw.games <- function(gameids) {
+  
+  game_urls <- sapply(gameids, proper_jsonurl_formatting)
+  
+ games_unf <- 
+   sapply(game_urls, FUN = function(x) {
+
+    cbind(sapply(RJSONIO::fromJSON(RCurl::getURL(x))[[1]]$home[2]$abbr, c), 
+          sapply(RJSONIO::fromJSON(RCurl::getURL(x))[[1]]$away[2]$abbr, c))
+  
+})
+raw.teams <- data.frame(colnames(games_unf),
+                        t(games_unf),
+                        row.names = NULL)
+
+colnames(raw.teams) <- c('Game ID', 'Home Team','Away Team')
+return(raw.teams)
+}
+```
+
+In the code chunk below, we run the `raw.games()` function that we just defined on the game ID's from the 2015, 2016, and 2017 seasons. Then we use the `join_all()` function from the plyr package to join the three `data.frames` together.  Finally, we use the `write.csv()` function to save this data to a CSV file.  The reason for saving the file is because it can take a while to run the function for each of the game id's so it's a good idea to save it for future use.  Don't worry about running this code, now I've already done it and save the results to a file in this repository.
+
+```{r, cache=TRUE, eval=FALSE}
+raw_teams5 <- raw.games(gameids = id2015)
+raw_teams6 <- raw.games(gameids = id2016)
+raw_teams7 <- raw.games(gameids = id2017[-c(64,78)])
+raw_teams <- plyr::join_all(dfs = list(raw_teams5, 
+                                       raw_teams6, 
+                                       raw_teams7),
+                            type = 'full')
+root <- find_root(is_git_root)
+write.csv(raw_teams, 
+          paste0(root,'/code/ffootball/objs/raw_teams.csv'),
+          row.names = F)
+```
+
+We can speed things up by loading it directly by accessing the `data.frame` of results that have already been extracted and saved within this repo. The code in the chunk below reads the data from the CSV file saved in this repository and stores the data under the object named `Games`.  The `datatable` function in the DT package is then used to generate an interactive table displaying the data. 
+
+```{r}
+root <- find_root(is_git_root)
+CSV <- paste0(root,'/code/ffootball/objs/raw_teams.csv')
+Games <- readr::read_csv(CSV)
+DT::datatable(Games)
+```
+
+Now, we want find which games involved the Oakland Raiders.  The code in the following chunk identifies which values in `Games` are the same as the character string 'OAK' and then determines which rows in `Games` include 'OAK' in either the Home Team or Away Team columns.  This results in a subset of the `Games` data that only includes the games in which the Oakland Raiders played.
+
+```{r}
+oak <- 'OAK' == Games
+
+keep_games <- Games[rowSums(oak) > 0,]
+```
+
+With this reduced data we can now use the `simple_boxscore()` function to extract the passing data for each of these games.  First let's take a look at what's inside of a 'simple boxscore'.  We'll choose the first game in the `keep_games` data set.  The game ID is in the first column so we want to use the `keep_games[1,1]` value.  Running this game ID return the following list of results.
+
+```{r}
+simple_boxscore(GameID = keep_games[1,1], home = T)
+```
+
+We can subset this list by noting the names of the objects stored inside.  We see that the first object in this list is 'HomePassing' which is passing data about for the home team.
+
+```{r}
+names(simple_boxscore(GameID = keep_games[1,1], home = T))
+```
+
+Finally, let's extract passing data from each game in `keep_games`. The function below does this by taking as first argument the `data.frame` of games and as second argument the abbreviation that we are interested in. This function then returns a `data.frame` with a new column on the fantasy passing points scored by the opposing team's quarterbacks in each game.  Note that in some of the games the opposing team may have played multiple quarterbacks.  This function takes this into account and sums up all of the passing stats for anyone playing quarterback in a given game.    
+
+```{r}
+pass_stats <- function(df, team) {
+  
+  df$qb_pts <- rep(0, nrow(df))
+  
+  for(i in 1:nrow(df)) {
+  
+    if(df[i,2] == team) {
+      
+     sbs  <- simple_boxscore(df[i,1], home = F)[[1]]
+     yds  <- Reduce('+', sbs$yds)
+     tds  <- Reduce('+', sbs$tds)
+     ints <- Reduce('+', sbs$ints)
+     score <- floor(yds/10) + tds * 6 - ints * 4
+     df$qb_pts[i] <- score
+      
+    }
+    
+    if(df[i,3] == team) {
+      
+     sbs  <- simple_boxscore(df[i,1], home = T)[[1]]
+     yds  <- Reduce('+', sbs$yds)
+     tds  <- Reduce('+', sbs$tds)
+     ints <- Reduce('+', sbs$ints)
+     score <- floor(yds/30) + tds * 6 - ints * 2
+     df$qb_pts[i] <- score
+      
+    }
+  }
+  return(df)
+}
+```
+
+Finally, lets run this function and look at the scores given up by the Raiders in these games.
+
+```{r, cache=TRUE}
+scores <- pass_stats(keep_games, 'OAK')
+DT::datatable(scores,
+              rownames = FALSE, 
+              options = list(columnDefs = list(list(className = 'dt-center', targets = '_all'))
+))
+```

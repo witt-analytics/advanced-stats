@@ -1,0 +1,16 @@
+base
+nnet
+magrittr
+nflscrapR
+ggplot2
+dplyr
+pheatmap
+XML
+bitops
+RCurl
+RJSONIO
+DT
+plyr
+rprojroot
+devtools
+readr
