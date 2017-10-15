@@ -14,3 +14,4 @@ plyr
 rprojroot
 devtools
 readr
+data.table
