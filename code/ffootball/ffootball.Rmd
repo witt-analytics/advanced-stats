@@ -7,7 +7,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = F, warning = F)
+knitr::opts_chunk$set(echo = TRUE, message = F, warning = F, fig.align = 'center')
 ```
 
 # Overview
@@ -34,7 +34,7 @@ In the sections that follow we walk through the initial steps of extracting data
 
 ## Getting Things Ready
 
-As usual, we first need to load some packages.  To do this, simply copy and copy the code in the chunk below and paste it into your R console.    If you've never installed one or more of these packages or if you get an error when running this code you can install the packages using the `install.package()` function. 
+As usual, we first need to load some packages.  To do this, simply copy and copy the code in the chunk below and paste it into your R console.    If you've never installed one or more of these packages or if you get an error when running this code you can install the packages using the `install.packages()` function. 
 
 ```{r}
 library(ggplot2)   # Graphics and data viz
@@ -47,6 +47,7 @@ library(DT)        # Interactive tables
 library(rprojroot) # Easily get root directories 
 library(devtools)  # Tools for R development
 library(readr)     # read in data from Excel files
+library(data.table)
 ```
 
 With these pacakges loaded, we now need to install the `nflscrapR` package. This package has not yet been published to the [__CRAN__](https://cran.r-project.org/), but can be downloaded and installed from [__GitHub__](https://github.com/maksimhorowitz/nflscrapR) using the `devtools` package.  The code below downloads and installs the package from the nflscrapR repository which is owned by the GitHub user maksimhorowitz.  
@@ -73,7 +74,7 @@ As you see there are several functions in the package and some my be of use to y
 
 I'd like to use the `simple_boxscore()` function to extract data from only the games that a specific team was involved in.  The `simple_boxscore()` function takes two arguments: `GameID` and `home`. The first argument `GameID` is a 10-digit character string or number that matches up with the game ID assigned by the NFL to uniquely identify each game.  The second argument `home` is a logical argument indicating if data is desired for the home team or not.  Of course we may not know the game ID's for the games involving the Raiders but we can use the `extracting_gameids()` function to get the game ID's for the 2015, 2016, and 2017 seasons.  
 
-```{r, cache=TRUE}
+```{r, cache=TRUE, eval=FALSE}
 id2015 <- extracting_gameids(2015)
 id2016 <- extracting_gameids(2016)
 id2017 <- extracting_gameids(2017)
@@ -81,8 +82,18 @@ id2017 <- extracting_gameids(2017)
 
 Observing the game ID's for the first 10 games of the 2015 season we see that the identifier includes the game date and a 2-digit number for the game playedd on that data.
 
-```{r}
+```{r, eval=FALSE}
 id2015[1:10]
+```
+
+```{r, echo=FALSE}
+root <- find_root(is_git_root)
+read.csv(paste0(root,'/code/ffootball/objs/game_ids.csv')) -> ids
+ids <- as.data.table(ids)
+ids[1:10,1]
+id2015 <- ids[year==2015,1]
+id2016 <- ids[year==2016,1]
+id2017 <- ids[year==2017,1]
 ```
 
 Now that we have the game ID's we need to find out which ID's reference games that involved either the Oakland Raiders or the Kansas City Chiefs.  To do this, we'll first declare a function to extract the teams playing in every game.  This function take a vector of game ID's and return a `data.frame` with three columns for the game ID, the abbreviation of the home team and the abbreviation of the away team. 
@@ -194,6 +205,50 @@ Finally, lets run this function and look at the scores given up by the Raiders i
 scores <- pass_stats(keep_games, 'OAK')
 DT::datatable(scores,
               rownames = FALSE, 
-              options = list(columnDefs = list(list(className = 'dt-center', targets = '_all'))
-))
+              options = list(columnDefs = list(list(className = 'dt-center', 
+                                                    targets = '_all'))))
 ```
+
+Add a column to the data set to indicate if the game is a home game for the Raiders
+
+```{r}
+scores$`Home Game` <- (scores$`Home Team`=='OAK') * 1
+```
+
+Add a column to the data set to indicate if the game is a division game for the Raiders
+
+```{r}
+div_teams <- c("SD","KC","DEN")
+div <- sapply(X = 1:nrow(scores),
+              FUN = function(x) sum(scores[x,]%in%div_teams))
+scores$`Div Game` <- div
+```
+
+Convert the `Home Game` and `Div Game` columns from numeric values to factors
+
+```{r}
+scores$`Div Game`  <- as.factor(scores$`Div Game`)
+scores$`Home Game` <- as.factor(scores$`Home Game`) 
+```
+
+```{r, fig.width=10}
+library(gridExtra)
+g1 <- ggplot(scores, aes(y = qb_pts, x = `Home Game`)) + geom_point()
+g2 <- ggplot(scores, aes(y = qb_pts, x = `Div Game`)) + geom_point()
+marrangeGrob(grobs = list(g1,g2), nrow = 1, ncol = 2, top = '')
+```
+
+```{r}
+model1 <- lm(qb_pts ~ `Home Game` + `Div Game`, data = scores) # additive effects
+model2 <- lm(qb_pts ~ `Home Game` * `Div Game`, data = scores) # interaction effects
+summary(model1)
+summary(model2)
+```
+
+```{r}
+newgame <- data.frame(as.factor(1), as.factor(1))
+colnames(newgame) <- c('Home Game', 'Div Game')
+predict(model1, newdata = newgame)
+predict(model2, newdata = newgame)
+```
+
