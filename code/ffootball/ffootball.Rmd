@@ -252,3 +252,34 @@ predict(model1, newdata = newgame)
 predict(model2, newdata = newgame)
 ```
 
+## Now we need to merge more data
+
+First let's convert `scores` from a `tibble` to a `data.table`.  Why? because `data.tables` are awesome and much faster that `tibbles`.
+
+
+Create a column to serve as the opposing team.  To do this we define a function, called `oppose`.
+
+```{r}
+oppose <- function(df, team, home_col, away_col)
+{
+  new_df <- as.data.frame(df)[, c(home_col, away_col)] 
+  ind <- which(new_df != team, arr.ind = T)
+  ord <- sort.list(ind[,1])
+  
+  opp_df <- sapply(X = 1:nrow(new_df), 
+                   FUN = function(x) new_df[c(ind[ord,1][x]), c(ind[ord,2][x])])
+  
+  return(data.table(unlist(opp_df)))
+}
+```
+
+
+```{r}
+scores_dt <- data.table::setDT(scores)
+scores_dt[,Team := oppose(scores, 'OAK',2,3)]
+data.table::setkey(scores_dt, Team)
+
+DT::datatable(scores_dt)
+```
+
+Merge more data together
