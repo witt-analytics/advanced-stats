@@ -56,7 +56,7 @@ With these pacakges loaded, we now need to install the `nflscrapR` package. This
 devtools::install_github("maksimhorowitz/nflscrapR")
 ```
 
-Once installed, we can load the package as normal usign the `library()` function.
+Once installed, we can load the package as normal using the `library()` function.
 
 ```{r}
 library(nflscrapR)
@@ -110,7 +110,7 @@ raw.games <- function(gameids) {
           sapply(RJSONIO::fromJSON(RCurl::getURL(x))[[1]]$away[2]$abbr, c))
   
 })
-raw.teams <- data.frame(colnames(games_unf),
+raw.teams <- data.frame(gameids,
                         t(games_unf),
                         row.names = NULL)
 
@@ -141,6 +141,8 @@ We can speed things up by loading it directly by accessing the `data.frame` of r
 root <- find_root(is_git_root)
 CSV <- paste0(root,'/code/ffootball/objs/raw_teams.csv')
 Games <- readr::read_csv(CSV)
+data.frame(lapply(Games, 
+                  FUN = function(x) gsub('JAX','JAC', x)))
 DT::datatable(Games)
 ```
 
@@ -179,7 +181,7 @@ pass_stats <- function(df, team) {
      yds  <- Reduce('+', sbs$yds)
      tds  <- Reduce('+', sbs$tds)
      ints <- Reduce('+', sbs$ints)
-     score <- floor(yds/10) + tds * 6 - ints * 4
+     score <- floor(yds/30) + tds * 6 - ints * 2
      df$qb_pts[i] <- score
       
     }
