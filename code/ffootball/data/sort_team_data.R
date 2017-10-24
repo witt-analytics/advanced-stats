@@ -72,4 +72,8 @@ assign(name, tm)
 
 data.table::setkey(get(name), Team)
 
-  
+sc2 <- scores_dt[train_data]
+
+sc2 <- sc2[-which(is.na(sc2$`Game ID`)),]
+
+model3 <- lm(qb_pts ~ `Home Game` + `Div Game` + pass.TD_heavy + pass.YD_heavy, data = sc2)
