@@ -1326,6 +1326,7 @@ h6 {
 }
 </style>
 
+<style type="text/css">pre {padding: 15px 0 15px 75px;border-style: solid;border-top-width: .75px;border-bottom-width: .75px;border-right-width: .75px;border-left-width: .75;border-color: #e7e7e7;color: #00428C;background-color: #e7e7e7;width: 90%;margin: 30px auto 30px auto;border-top-right-radius: 10px;border-top-left-radius: 10px;border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;}pre code {font-size: 13pt;font-weight: 550;line-height: 120%;}li pre {margin-right: 0;border: none;font-family: "modern";}pre.sourceCode {font-size: 70%;background-color: #e6e6e6;margin: 5px 150px 5px -5px;line-height: 100%;padding: 15px 0 15px 75px;border-color: #e6e6e6;}code.sourceCode{font-size: 12pt;border: none;font-weight: 550;white-space: pre !important;}code {font-size: .8em;font-family: 'Source Code Pro', 'Courier New', monospace;font-weight: normal;padding: .1em .3em .1em .3em;border-radius: .3em;}p code {font-size: .8em;font-family: 'Source Code Pro', 'Courier New', monospace;color: red;font-weight: normal;background-color: #e6e6e6;padding: .1em .3em .1em .3em;border-radius: .3em;white-space: nowrap;vertical-align: 10%;}code > span.kw { color: #007020; font-weight: bold; } code > span.dt { color: #902000; font-weight: bold; } code > span.dv { color: #40a070; } code > span.bn { color: #40a070; } code > span.fl { color: #40a070; } code > span.ch { color: #4070a0; } code > span.st { color: #4070a0; } code > span.co { color: #60a0b0; font-style: italic; } code > span.ot { color: #007020; } code > span.al { color: #ff0000; font-weight: bold; } code > span.fu { color: #06287e; } code > span.er { color: #ff0000; font-weight: bold; } code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } code > span.cn { color: #880000; } code > span.sc { color: #4070a0; } code > span.vs { color: #4070a0; } code > span.ss { color: #bb6688; } code > span.im { } code > span.va { color: #19177c; } code > span.cf { color: #007020; font-weight: bold; } code > span.op { color: #666666; } code > span.bu { } code > span.ex { } code > span.pp { color: #bc7a00; } code > span.at { color: #7d9029; } code > span.do { color: #ba2121; font-style: italic; } code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } div.main-container {max-width: 1800px !important;}p {font-size: 13pt !important;}ul li {font-size: 13pt !important;}a {font-weight: bold !important;}#TOC > ul > li {font-size: 12pt;font-weight: normal;}h4 {font-size: 20px;text-align: center;font-weight: bold;text-decoration: underline;margin: 50px;}.fluid-row h4 {text-align: left;font-size: 32;text-decoration: none;margin: 12px 0;}.nav-tabs {border-bottom: 1px solid #ddd;margin: 40px 0;}.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {color: #FFF;background-color: #23527c;}</style>
 
 </head>
 
@@ -1542,8 +1543,8 @@ div.tocify {
 
 <div id="overview" class="section level2">
 <h2>Overview</h2>
-<p>I’m sorry that I can’t be with you all in-person today, we had a scheduling snafu, were double-booked for tomorrow 19 October. Regardless, I’ve put together a ton of resources and a schedule for today to make sure that no falls behind.</p>
-<p>My plan for the rest of this course is to use the great textbook <a href="http://www-bcf.usc.edu/~gareth/ISL/">Introduction to Statistical Learning (with applications in R)</a> by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani as the course textbook. A pdf copy of the text has been placed in each of the <code>advancedstats</code> team repositories on GitHub in the newly created resources folder.</p>
+<p>I’m sorry that I can’t be with you all in-person today, a scheduling issue occurred where the program was double-booked for tomorrow 19 October. Regardless, I’ve put together a ton of resources and a schedule for today to make sure that no one falls behind and we can cover the material I had planned to discuss.</p>
+<p>For the rest of this course we’ll be using the great textbook <a href="http://www-bcf.usc.edu/~gareth/ISL/">Introduction to Statistical Learning (with applications in R)</a> by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani as our textbook. A pdf copy of the text has been placed in each of the <code>advancedstats</code> team repositories on GitHub in the newly created resources folder.</p>
 <p>To get these new files on your local machine, you’ll need to do a <code>pull</code>. However, If you have any unsaved or uncommitted changes in your repo, please make sure you save the files and make a new commit - <strong><u>don’t push yet</u></strong>. Once, you’ve stashed your changes in a commit, you can perform the pull. Then if you want, you can push all of the changes up together.</p>
 <p>The ISLR text comes with a number of support resources that will help you in completing the course. Some of these can be found on the book’s website (link provided above). These resources include</p>
 <ul>
@@ -1557,7 +1558,7 @@ div.tocify {
 <pre class="r"><code>data(package = &quot;ISLR&quot;)</code></pre>
 <p>For today’s meeting you’ll cover most of the first 4 chapters of the ISLR text. I’ve provided links to all of the needed resources below - you should only need a computer and an internet connection. For each chapter you’ll need to watch the videos provided by the textbook authors and review the content from the book. I’ve also provided links to view the slides, however, I suggest that you use the book to follow along with the videos as the book provides far more information and it can be difficult to follow along with two resources.</p>
 <p>Each chapter in the text ends with a lab and a set of exercises. The labs are helpful as they show you how to use R to implement the statistical methods described in the chapter to an example dataset. These exercises are divided into two categories Conceptual Exercises and Applied Exercises. I will assign selected exercises for you to complete for each chapter. Completing these exercises will help to reinforce your learning of the material. You may work with your team or as an entire class to complete these exercises, but each team must turn in their own finished work. I’ve placed a homework folder in each of the advancedstats team repositories. To turn in your work, simply save the file in the homework folder, commit and push.</p>
-<p>Exercises for chapters 2-4 should be completed in rmarkdown and should be ‘turned in’ no later than midnight on 25 October. Additonal chapters will be assigned throughout the final two months of the course. Any questions</p>
+<p>Exercises for chapters 2-4 should be completed in rmarkdown and should be ‘turned in’ no later than midnight on 25 October. Additonal sections/chapters will be assigned throughout the final two months of the course. If you have any questions about the material in the book or guidance on one of the exercises, there are several ways to get help. First, we have two Skype calls set up for today, one at 11:30 and the other at 4:00. During these calls you’ll have opportunity to get clarification on the material presented in the morning and again in the afternoon. The second way to ask questions will be to use Microsoft teams. I’ve added a channel to the witt-analytics team, called <code>ANLT501 - Advanced Stats</code> you can use this channel to ask me, or your classmates about the material presented in the text.</p>
 </div>
 <div id="chapter-1" class="section level2 tabbed">
 <h2>Chapter 1</h2>
@@ -1584,194 +1585,238 @@ div.tocify {
 <h2>Chapter 2</h2>
 <p>Watch the videos under each of the tabbed sections below. In these videos the authors discuss several issues that are important to consider for statistical learning and introduce linear regression. <strong>Note:</strong> the content presented in these videos corresponds with the book content for this chapter, however, each video may not line up with each section in the chapter.</p>
 <p>In additionally to the videos, here is a <a href="https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/statistical_learning.pdf"><strong>link to the slides</strong></a> for this chapter (Optional).</p>
-<p>There are no assigned exercises for this chapter.</p>
+<p>When you’ve finished with watching the videos and reviewing chapter 2 from the text (and walked through the lab) - complete exercises 2, 5, 6 and 8 shown at the end of the chapter.</p>
 <div id="tab-1" class="section level3">
 <h3>Tab 1</h3>
-<p>Statistical Learning and Regression</p>
+<div id="statistical-learning-and-regression" class="section level4">
+<h4>Statistical Learning and Regression</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/WjyuiK5taS8">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-2" class="section level3">
 <h3>Tab 2</h3>
-<p>Curse of Dimensionality and Parametric Models</p>
+<div id="curse-of-dimensionality-and-parametric-models" class="section level4">
+<h4>Curse of Dimensionality and Parametric Models</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/UvxHOkYQl8g">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-3" class="section level3">
 <h3>Tab 3</h3>
-<p>Assessing Model Accuracy and Bias-Variance Trade-off</p>
+<div id="assessing-model-accuracy-and-bias-variance-trade-off" class="section level4">
+<h4>Assessing Model Accuracy and Bias-Variance Trade-off</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/VusKAosxxyk">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-4" class="section level3">
 <h3>Tab 4</h3>
-<p>Classification Problems and K-Nearest Neighbors</p>
+<div id="classification-problems-and-k-nearest-neighbors" class="section level4">
+<h4>Classification Problems and K-Nearest Neighbors</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/Vj2itVNku4">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-5" class="section level3">
 <h3>Tab 5</h3>
-<p>Lab: Introduction to R</p>
+<div id="lab-introduction-to-r" class="section level4">
+<h4>Lab: Introduction to R</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/jwBgGS_4RQA">
 </iframe>
 </center>
 </div>
 </div>
+</div>
 <div id="chapter-3" class="section level2 tabset">
 <h2>Chapter 3</h2>
 <p>Watch the videos under each of the tabbed sections below. In these videos the authors provide a deep dive into both simple linear regression and multiple linear regression. Note: the content presented in these videos corresponds with the book content for this chapter, however, each video may not line up with each section in the chapter.</p>
 <p>In additionally to the videos, here’s a <a href="https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/linear_regression.pdf"><strong>link to the slides</strong></a> for this chapter (Optional).</p>
-<p>There are no assigned exercises for this chapter.</p>
+<p>When you’ve finished with watching the videos and reviewing chapter 2 from the text (and walked through the lab) - complete exercises 8, 9, 13, and 15 shown at the end of the chapter.</p>
 <div id="tab-1-1" class="section level3">
 <h3>Tab 1</h3>
-<p>Simple Linear Regression and Confidence Intervals</p>
+<div id="simple-linear-regression-and-confidence-intervals" class="section level4">
+<h4>Simple Linear Regression and Confidence Intervals</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/PsE9UqoWtS4">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-2-1" class="section level3">
 <h3>Tab 2</h3>
-<p>Hypothesis Testing</p>
+<div id="hypothesis-testing" class="section level4">
+<h4>Hypothesis Testing</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/J6AdoiNUyWI">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-3-1" class="section level3">
 <h3>Tab 3</h3>
-<p>Multiple Linear Regression and Interpreting Regression Coefficients</p>
+<div id="multiple-linear-regression-and-interpreting-regression-coefficients" class="section level4">
+<h4>Multiple Linear Regression and Interpreting Regression Coefficients</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/1hbCJyM9ccs">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-4-1" class="section level3">
 <h3>Tab 4</h3>
-<p>Model Selection and Qualitative Predictors</p>
+<div id="model-selection-and-qualitative-predictors" class="section level4">
+<h4>Model Selection and Qualitative Predictors</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/3T6RXmIHbJ4">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-5-1" class="section level3">
 <h3>Tab 5</h3>
-<p>Interactions and Nonlinearity</p>
+<div id="interactions-and-nonlinearity" class="section level4">
+<h4>Interactions and Nonlinearity</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/IFzVxLv0TKQ">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-6" class="section level3">
 <h3>Tab 6</h3>
-<p>Lab: Linear Regression</p>
+<div id="lab-linear-regression" class="section level4">
+<h4>Lab: Linear Regression</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/5ONFqIk3RFg">
 </iframe>
 </center>
 </div>
 </div>
+</div>
 <div id="chapter-4" class="section level2 tabset">
 <h2>Chapter 4</h2>
 <p>Watch the videos under each of the tabbed sections below. In these videos the authors outline the concepts that motivate the ideas behind the ISLR text. Note: the content presented in these videos corresponds with that of book content for this chapter. However, each video may not line up with each section of the book.</p>
 <p>In additionally to the videos, here’s a <a href="https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/classification.pdf"><strong>link to the slides</strong></a> for this chapter (Optional).</p>
-<p>There are no assigned exercises for this chapter.</p>
+<p>When you’ve finished with watching the videos and reviewing chapter 2 from the text (and walked through the lab) - complete exercises 6, 9, 11, and 12 shown at the end of the chapter.</p>
 <div id="tab-1-2" class="section level3">
 <h3>Tab 1</h3>
-<p>Introduction to Classification</p>
+<div id="introduction-to-classification" class="section level4">
+<h4>Introduction to Classification</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/sqq21-VIa1c">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-2-2" class="section level3">
 <h3>Tab 2</h3>
-<p>Logistic Regression and Maximum Likelihood</p>
+<div id="logistic-regression-and-maximum-likelihood" class="section level4">
+<h4>Logistic Regression and Maximum Likelihood</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/31Q5FGRnxt4">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-3-2" class="section level3">
 <h3>Tab 3</h3>
-<p>Multivariate Logistic Regression and Confounding</p>
+<div id="multivariate-logistic-regression-and-confounding" class="section level4">
+<h4>Multivariate Logistic Regression and Confounding</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/MpX8rVv_u4E">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-4-2" class="section level3">
 <h3>Tab 4</h3>
-<p>Case-Control Sampling and Multiclass Logistic Regression</p>
+<div id="case-control-sampling-and-multiclass-logistic-regression" class="section level4">
+<h4>Case-Control Sampling and Multiclass Logistic Regression</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/GavRXXEHGqU">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-5-2" class="section level3">
 <h3>Tab 5</h3>
-<p>Linear Discriminant Analysis and Bayes Theorem</p>
+<div id="linear-discriminant-analysis-and-bayes-theorem" class="section level4">
+<h4>Linear Discriminant Analysis and Bayes Theorem</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/RfrGiG1Hm3M">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-6-1" class="section level3">
 <h3>Tab 6</h3>
-<p>Univariate Linear Discriminant Analysis</p>
+<div id="univariate-linear-discriminant-analysis" class="section level4">
+<h4>Univariate Linear Discriminant Analysis</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/QG0pVJXT6EU">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-7" class="section level3">
 <h3>Tab 7</h3>
-<p>Multivariate Linear Discriminant Analysis and ROC Curves</p>
+<div id="multivariate-linear-discriminant-analysis-and-roc-curves" class="section level4">
+<h4>Multivariate Linear Discriminant Analysis and ROC Curves</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/X4VDZDp2vqw">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-8" class="section level3">
 <h3>Tab 8</h3>
-<p>Quadratic Discriminant Analysis and Naive Bayes</p>
+<div id="quadratic-discriminant-analysis-and-naive-bayes" class="section level4">
+<h4>Quadratic Discriminant Analysis and Naive Bayes</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/6FiNGTYAOAA">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-9" class="section level3">
 <h3>Tab 9</h3>
-<p>Lab: Logistic Regression</p>
+<div id="lab-logistic-regression" class="section level4">
+<h4>Lab: Logistic Regression</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/TxvEVc8YNlU">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-10" class="section level3">
 <h3>Tab 10</h3>
-<p>Lab: Linear Discriminant Analysis</p>
+<div id="lab-linear-discriminant-analysis" class="section level4">
+<h4>Lab: Linear Discriminant Analysis</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/2cl7JiPzkBY">
 </iframe>
 </center>
 </div>
+</div>
 <div id="tab-11" class="section level3">
 <h3>Tab 11</h3>
-<p>Lab: K-Nearest Neighbors</p>
+<div id="lab-k-nearest-neighbors" class="section level4">
+<h4>Lab: K-Nearest Neighbors</h4>
 <center>
 <iframe width="630" height="465" src="https://www.youtube.com/embed/9TVVF7CS3F4">
 </iframe>
 </center>
+</div>
 </div>
 </div>
 
