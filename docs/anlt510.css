@@ -54,7 +54,7 @@ code {
 }
 
 p code {
-  font-size: .8em;
+  font-size: 16px;
   font-family: 'Source Code Pro', 'Courier New', monospace;
   color: red;
   font-weight: normal;
@@ -139,9 +139,15 @@ h4 {
 .nav-tabs {
     border-bottom: 1px solid #ddd;
     margin: 40px 0;
+    font-size: 16px;
 }
 
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     color: #FFF;
     background-color: #23527c;
+}
+
+p {
+  
+  font-size: 16px !important;
 }
