@@ -1,0 +1,311 @@
+---
+title: "ANLT 510 Advanced Statistics and Modeling"
+author: "Jason Freels"
+date: "10/18/2018"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+## Overview
+
+I'm sorry that I can't be with you all in-person today, we had a scheduling snafu, were double-booked for tomorrow 19 October.  Regardless, I've put together a ton of resources and a schedule for today to make sure that no falls behind.
+
+My plan for the rest of this course is to use the great textbook [Introduction to Statistical Learning (with applications in R)](http://www-bcf.usc.edu/~gareth/ISL/) by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani as the course textbook. A pdf copy of the text has been placed in each of the `advancedstats` team repositories on GitHub in the newly created resources folder.  
+
+To get these new files on your local machine, you'll need to do a `pull`. However, If you have any unsaved or uncommitted changes in your repo, please make sure you save the files and make a new commit -  **<u>don't push yet</u>**.  Once, you've stashed your changes in a commit, you can perform the pull. Then if you want, you can push all of the changes up together. 
+
+The ISLR text comes with a number of support resources that will help you in completing the course. Some of these can be found on the book's website (link provided above).  These resources include
+
+- CSV files containing the datasets used throughout the text
+- R code files for following along with the applied the labs shown at the end of each chapter 
+- A link to the [ISLR](http://cran.r-project.org/web/packages/ISLR/index.html) package.  
+
+As a first step, let's go ahead and install the `ISLR` package using the code below.
+
+```{r eval=FALSE}
+install.packages('ISLR')
+```
+
+The `ISLR` package contains the datasets used for in text and makes them super-easy to access.  To view the datasets in the package, first make sure the package is installed, and then use the code below.
+
+```{r, eval=FALSE}
+data(package = "ISLR")
+```
+
+For today's meeting you'll cover most of the first 4 chapters of the ISLR text. I've provided links to all of the needed resources below - you should only need a computer and an internet connection. For each chapter you'll need to watch the videos provided by the textbook authors and review the content from the book.  I've also provided links to view the slides, however, I suggest that you use the book to follow along with the videos as the book provides far more information and it can be difficult to follow along with two resources.  
+
+Each chapter in the text ends with a lab and a set of exercises.  The labs are helpful as they show you how to use R to implement the statistical methods described in the chapter to an example dataset.  These exercises are divided into two categories Conceptual Exercises and Applied Exercises.  I will assign selected exercises for you to complete for each chapter.  Completing these exercises will help to reinforce your learning of the material.  You may work with your team or as an entire class to complete these exercises, but each team must turn in their own finished work. I've placed a homework folder in each of the advancedstats team repositories.  To turn in your work, simply save the file in the homework folder, commit and push.
+
+Exercises for chapters 2-4 should be completed in rmarkdown and should be 'turned in' no later than midnight on 25 October.  Additonal chapters will be assigned throughout the final two months of the course.  Any questions 
+
+## Chapter 1 {.tabbed}
+
+Watch the videos under each of the tabbed sections below.  In these videos the authors outline the concepts that motivate the ideas behind the ISLR text. Note: the content presented in these videos corresponds with the book content for this chapter, however, each video may not line up with each section in the chapter.  
+
+In additionally to the videos, here is a [**link to the slides**](https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/introduction.pdf) for this chapter (Optional).  
+
+There are no assigned exercises for this chapter.
+
+#### Opening Remarks and Examples
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/2wLfFB_6SKI">
+</iframe>
+</center>
+<br/>
+
+#### Supervised and Unsupervised Learning
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/LvaTokhYnDw">
+</iframe>
+</center>
+
+## Chapter 2 {.tabset}
+
+Watch the videos under each of the tabbed sections below.  In these videos the authors discuss several issues that are important to consider for statistical learning and introduce linear regression. **Note:** the content presented in these videos corresponds with the book content for this chapter, however, each video may not line up with each section in the chapter.  
+
+In additionally to the videos, here is a [**link to the slides**](https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/statistical_learning.pdf) for this chapter (Optional).
+
+There are no assigned exercises for this chapter.
+
+### Tab 1
+
+Statistical Learning and Regression
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/WjyuiK5taS8">
+</iframe>
+</center>
+
+### Tab 2
+
+Curse of Dimensionality and Parametric Models 
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/UvxHOkYQl8g">
+</iframe>
+</center>
+
+### Tab 3
+
+Assessing Model Accuracy and Bias-Variance Trade-off
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/VusKAosxxyk">
+</iframe>
+</center>
+
+### Tab 4
+
+Classification Problems and K-Nearest Neighbors
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/Vj2itVNku4">
+</iframe>
+</center>
+
+### Tab 5
+
+Lab: Introduction to R
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/jwBgGS_4RQA">
+</iframe>
+</center>
+
+## Chapter 3 {.tabset}
+
+Watch the videos under each of the tabbed sections below.  In these videos the authors provide a deep dive into both simple linear regression and multiple linear regression. Note: the content presented in these videos corresponds with the book content for this chapter, however, each video may not line up with each section in the chapter. 
+
+In additionally to the videos, here's a [**link to the slides**](https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/linear_regression.pdf) for this chapter (Optional).  
+
+There are no assigned exercises for this chapter.
+
+### Tab 1
+
+Simple Linear Regression and Confidence Intervals
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/PsE9UqoWtS4">
+</iframe>
+</center>
+
+### Tab 2
+
+Hypothesis Testing
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/J6AdoiNUyWI">
+</iframe>
+</center>
+
+### Tab 3
+
+Multiple Linear Regression and Interpreting Regression Coefficients
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/1hbCJyM9ccs">
+</iframe>
+</center>
+
+### Tab 4
+
+Model Selection and Qualitative Predictors
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/3T6RXmIHbJ4">
+</iframe>
+</center>
+
+### Tab 5
+
+Interactions and Nonlinearity
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/IFzVxLv0TKQ">
+</iframe>
+</center>
+
+### Tab 6
+
+Lab: Linear Regression
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/5ONFqIk3RFg">
+</iframe>
+</center>
+
+## Chapter 4 {.tabset}
+
+Watch the videos under each of the tabbed sections below.  In these videos the authors outline the concepts that motivate the ideas behind the ISLR text. Note: the content presented in these videos corresponds with that of book content for this chapter. However, each video may not line up with each section of the book.  
+
+In additionally to the videos, here's a [**link to the slides**](https://lagunita.stanford.edu/c4x/HumanitiesScience/StatLearning/asset/classification.pdf) for this chapter (Optional).  
+
+There are no assigned exercises for this chapter.
+
+
+### Tab 1
+
+Introduction to Classification
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/sqq21-VIa1c">
+</iframe>
+</center>
+
+### Tab 2
+
+Logistic Regression and Maximum Likelihood
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/31Q5FGRnxt4">
+</iframe>
+</center>
+
+### Tab 3
+
+Multivariate Logistic Regression and Confounding
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/MpX8rVv_u4E">
+</iframe>
+</center>
+
+### Tab 4
+
+Case-Control Sampling and Multiclass Logistic Regression
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/GavRXXEHGqU">
+</iframe>
+</center>
+
+### Tab 5
+
+Linear Discriminant Analysis and Bayes Theorem
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/RfrGiG1Hm3M">
+</iframe>
+</center>
+
+### Tab 6
+
+Univariate Linear Discriminant Analysis
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/QG0pVJXT6EU">
+</iframe>
+</center>
+
+### Tab 7
+
+Multivariate Linear Discriminant Analysis and ROC Curves
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/X4VDZDp2vqw">
+</iframe>
+</center>
+
+### Tab 8
+
+Quadratic Discriminant Analysis and Naive Bayes
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/6FiNGTYAOAA">
+</iframe>
+</center>
+
+### Tab 9
+
+Lab: Logistic Regression
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/TxvEVc8YNlU">
+</iframe>
+</center>
+
+### Tab 10
+
+Lab: Linear Discriminant Analysis
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/2cl7JiPzkBY">
+</iframe>
+</center>
+
+### Tab 11
+
+Lab: K-Nearest Neighbors
+
+<center>
+<iframe width="630" height="465"
+src="https://www.youtube.com/embed/9TVVF7CS3F4">
+</iframe>
+</center>
